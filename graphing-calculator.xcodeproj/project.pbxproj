@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F16E91423429C98003CFA08 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16E91323429C98003CFA08 /* InfoViewController.swift */; };
 		3F98F2A1233C0FB400ECB75D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F98F2A0233C0FB400ECB75D /* AppDelegate.swift */; };
 		3F98F2A3233C0FB400ECB75D /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F98F2A2233C0FB400ECB75D /* FirstViewController.swift */; };
 		3F98F2A5233C0FB400ECB75D /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F98F2A4233C0FB400ECB75D /* SecondViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F16E91323429C98003CFA08 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		3F98F29D233C0FB400ECB75D /* graphing-calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "graphing-calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F98F2A0233C0FB400ECB75D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F98F2A2233C0FB400ECB75D /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				3F98F2A0233C0FB400ECB75D /* AppDelegate.swift */,
 				3F98F2A2233C0FB400ECB75D /* FirstViewController.swift */,
 				3F98F2A4233C0FB400ECB75D /* SecondViewController.swift */,
+				3F16E91323429C98003CFA08 /* InfoViewController.swift */,
 				3F98F2A6233C0FB400ECB75D /* Main.storyboard */,
 				3F98F2A9233C0FB500ECB75D /* Assets.xcassets */,
 				3F98F2AB233C0FB500ECB75D /* LaunchScreen.storyboard */,
@@ -140,6 +143,7 @@
 			files = (
 				3F98F2A5233C0FB400ECB75D /* SecondViewController.swift in Sources */,
 				3F98F2A1233C0FB400ECB75D /* AppDelegate.swift in Sources */,
+				3F16E91423429C98003CFA08 /* InfoViewController.swift in Sources */,
 				3F98F2A3233C0FB400ECB75D /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
