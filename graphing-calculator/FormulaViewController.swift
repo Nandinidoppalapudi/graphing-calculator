@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  SecondViewController.swift
 //  graphing-calculator
 //
 //  Created by student on 9/25/19.
@@ -8,13 +8,11 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class FormulaViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Hello Nandini
-        //Hello whats Up!
+        // Do any additional setup after loading the view, typically from a nib.
     }
 
 
