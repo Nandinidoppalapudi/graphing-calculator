@@ -202,7 +202,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Formula" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Formula" image="icons8-formula-fx-36" id="cPa-gy-q4n"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
@@ -267,7 +267,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="p7y-tO-7Rr"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Info" image="first" id="U6C-zQ-9GJ"/>
+                    <tabBarItem key="tabBarItem" title="Info" image="icons8-about-36" id="U6C-zQ-9GJ"/>
                     <connections>
                         <outlet property="bulletLabel" destination="0VA-J7-8Dr" id="5Q8-Bj-L8g"/>
                         <outlet property="textLabel" destination="pbX-uv-aBf" id="Y7R-or-wXN"/>
@@ -298,10 +298,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
         <image name="formula" width="444" height="168"/>
         <image name="graph2" width="450" height="449"/>
+        <image name="icons8-about-36" width="36" height="36"/>
+        <image name="icons8-formula-fx-36" width="36" height="36"/>
         <image name="icons8-graph-36" width="36" height="36"/>
-        <image name="second" width="30" height="30"/>
     </resources>
 </document>
