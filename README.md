@@ -1,1 +1,2 @@
 # graphing-calculator
+Student = Nandini
