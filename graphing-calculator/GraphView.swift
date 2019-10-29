@@ -10,58 +10,61 @@ import UIKit
 
 class GraphView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+    let xLength = 375
+    let yLength = 430
+    
+    let xHalf = 375/2
+    let yHalf = 430/2
+    
+    var userScale = 10
+    
+    
     
     override func draw(_ rect: CGRect) {
         
         let yLine = UIBezierPath()
         yLine.lineWidth = 1.0
         UIColor.black.setStroke()
-        yLine.move(to: CGPoint(x: 375/2, y:0))
-        yLine.addLine(to: CGPoint(x: 375/2, y:430.0))
+        yLine.move(to: CGPoint(x: xHalf, y:0))
+        yLine.addLine(to: CGPoint(x: xHalf, y: yLength))
         yLine.stroke()
         
         let xLine = UIBezierPath()
         xLine.lineWidth = 1.0
         UIColor.black.setStroke()
-        xLine.move(to: CGPoint(x: 0, y: 430/2))
-        xLine.addLine(to: CGPoint(x: 375.0, y: 430/2))
+        xLine.move(to: CGPoint(x: 0, y: yHalf))
+        xLine.addLine(to: CGPoint(x: xLength, y: yHalf))
         xLine.stroke()
         
         let xHash = UIBezierPath()
         xHash.lineWidth = 1.0
         UIColor.black.setStroke()
-        for i in stride(from: 375/2, through: 0, by: -5)  {
-           xHash.move(to: CGPoint(x: i, y: (430/2) + 5))
-           xHash.addLine(to: CGPoint(x: i, y: (430/2) - 5))
+        for i in stride(from: xHalf, through: 0, by: -(xHalf)/userScale)  {
+           xHash.move(to: CGPoint(x: i, y: yHalf + 5))
+           xHash.addLine(to: CGPoint(x: i, y: yHalf - 5))
            xHash.stroke()
         }
         
-        for i in stride(from: 375/2, through: 375, by: 5) {
-            xHash.move(to: CGPoint(x: i, y: (430/2) + 5))
-            xHash.addLine(to: CGPoint(x: i, y: (430/2) - 5))
+        for i in stride(from: xHalf, through: xLength, by: xHalf/userScale) {
+            xHash.move(to: CGPoint(x: i, y: yHalf + 5))
+            xHash.addLine(to: CGPoint(x: i, y: yHalf - 5))
             xHash.stroke()
         }
         
         let yHash = UIBezierPath()
         yHash.lineWidth = 1.0
         UIColor.black.setStroke()
-        for i in stride(from: 430/2, through: 0, by: -5){
-            yHash.move(to: CGPoint(x: (375/2) - 5, y: i))
-            yHash.addLine(to: CGPoint(x: (375/2) + 5, y: i))
+        for i in stride(from: yHalf, through: 0, by: -(yHalf)/userScale){
+            yHash.move(to: CGPoint(x: xHalf - 5, y: i))
+            yHash.addLine(to: CGPoint(x: xHalf + 5, y: i))
             yHash.stroke()
         }
         
-        for i in stride(from: 430/2, through: 430, by: 5) {
-            yHash.move(to: CGPoint(x: (375/2) - 5, y: i))
-            yHash.addLine(to: CGPoint(x: (375/2) + 5, y: i))
+        for i in stride(from: yHalf, through: yLength, by: yHalf/userScale) {
+            yHash.move(to: CGPoint(x: xHalf - 5, y: i))
+            yHash.addLine(to: CGPoint(x: xHalf + 5, y: i))
             yHash.stroke()
+            
         }
     }
 }
