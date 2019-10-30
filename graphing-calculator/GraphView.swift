@@ -65,6 +65,7 @@ class GraphView: UIView {
             yHash.addLine(to: CGPoint(x: xHalf + 5, y: i))
             yHash.stroke()
             
+            //test
         }
     }
 }
