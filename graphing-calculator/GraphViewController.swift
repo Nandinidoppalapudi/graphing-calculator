@@ -22,29 +22,19 @@ class GraphViewController: UIViewController {
     @IBOutlet weak var cTF: UITextField!
     @IBOutlet weak var graphView: GraphView!
     
+    @IBAction func changeScale(_ sender: UIButton) {
+        self.graphView.max = Int(scaleX.text!)!
+        self.graphView.min = Int(scaleY.text!)!
+        self.graphView.setNeedsDisplay()
+    }
+    
+    @IBOutlet weak var scaleX: UITextField!
+    @IBOutlet weak var scaleY: UITextField!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchFilter))
-        
     }
 
-
-    @objc func searchFilter(){
-        let ac = UIAlertController(title: "Scaling", message: "Please enter a number to scale by.", preferredStyle: .alert)
-        
-        ac.addTextField { (textField) in textField.text = ""}
-        
-        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak ac] (action) -> Void in let textNum = ac?.textFields![0] as UITextField!
-            self.graphView.userScale = Int((textNum?.text!)!)!
-            self.graphView.setNeedsDisplay()
-        }))
-        self.present(ac, animated: true)
-        //test
-        
-    }
-    
 }
 

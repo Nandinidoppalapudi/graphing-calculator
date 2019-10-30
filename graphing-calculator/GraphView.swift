@@ -16,7 +16,8 @@ class GraphView: UIView {
     let xHalf = 375/2
     let yHalf = 430/2
     
-    var userScale = 10
+    var max = 10
+    var min = 10
     
     
     
@@ -39,13 +40,13 @@ class GraphView: UIView {
         let xHash = UIBezierPath()
         xHash.lineWidth = 1.0
         UIColor.black.setStroke()
-        for i in stride(from: xHalf, through: 0, by: -(xHalf)/userScale)  {
+        for i in stride(from: xHalf, through: 0, by: -(xHalf)/min)  {
            xHash.move(to: CGPoint(x: i, y: yHalf + 5))
            xHash.addLine(to: CGPoint(x: i, y: yHalf - 5))
            xHash.stroke()
         }
         
-        for i in stride(from: xHalf, through: xLength, by: xHalf/userScale) {
+        for i in stride(from: xHalf, through: xLength, by: xHalf/max) {
             xHash.move(to: CGPoint(x: i, y: yHalf + 5))
             xHash.addLine(to: CGPoint(x: i, y: yHalf - 5))
             xHash.stroke()
@@ -54,13 +55,13 @@ class GraphView: UIView {
         let yHash = UIBezierPath()
         yHash.lineWidth = 1.0
         UIColor.black.setStroke()
-        for i in stride(from: yHalf, through: 0, by: -(yHalf)/userScale){
+        for i in stride(from: yHalf, through: 0, by: -(yHalf)/max){
             yHash.move(to: CGPoint(x: xHalf - 5, y: i))
             yHash.addLine(to: CGPoint(x: xHalf + 5, y: i))
             yHash.stroke()
         }
         
-        for i in stride(from: yHalf, through: yLength, by: yHalf/userScale) {
+        for i in stride(from: yHalf, through: yLength, by: yHalf/min) {
             yHash.move(to: CGPoint(x: xHalf - 5, y: i))
             yHash.addLine(to: CGPoint(x: xHalf + 5, y: i))
             yHash.stroke()
