@@ -35,58 +35,70 @@ class GraphViewController: UIViewController {
     
     @IBAction func clearGraph(_ sender: UIButton) {
         x1TF.text = nil
+        graphView.xPoint1 = Double(x1TF.text!)
         y1TF.text = nil
+        graphView.yPoint1 = Double(y1TF.text!)
         x2TF.text = nil
+        graphView.xPoint2 = Double(x2TF.text!)
         y2TF.text = nil
-        mLBL.text = nil
-        yLBL.text = nil
+        graphView.yPoint2 = Double(y2TF.text!)
+        mLBL.text = "m"
+        yLBL.text = "b"
+        
         yinterceptTF.text = nil
         graphView.yIntercept = Double(yinterceptTF.text!)
         slopeTF.text = nil
         graphView.slope = Double(slopeTF.text!)
+        
         aTF.text = nil
         graphView.quadAvalue = Double(aTF.text!)
         bTF.text = nil
         graphView.quadBvalue = Double(bTF.text!)
         cTF.text = nil
         graphView.quadCvalue = Double(cTF.text!)
+        
         graphView.setNeedsDisplay()
     }
     
     @IBAction func graphPointsEquation(_ sender: UIButton) {
-        let y2 = Double(y2TF.text!)
+        var y2: Double? = 0.0
         if y2TF.text!.contains("/"){
-            graphView.y2 = graphView.solveFraction(fractionInput: y2TF.text!)
+            y2 = graphView.solveFraction(fractionInput: y2TF.text!)
+        } else {
+            y2 = Double(y2TF.text!)
         }
-        else {
-            graphView.y2 = y2
-        }
-        let y1 = Double(y1TF.text!)
+        graphView.yPoint2 = y2
+        
+        var y1: Double? = 0.0
         if y1TF.text!.contains("/"){
-            graphView.y1 = graphView.solveFraction(fractionInput: y1TF.text!)
+            y1 = graphView.solveFraction(fractionInput: y1TF.text!)
+        } else {
+            y1 = Double(y1TF.text!)
         }
-        else {
-            graphView.y2 = y2
-        }
+        graphView.yPoint1 = y1
         let y = y2! - y1!
-        let x1 = Double(x1TF.text!)
+
+        var x1: Double? = 0.0
         if x1TF.text!.contains("/"){
-            graphView.x1 = graphView.solveFraction(fractionInput: x1TF.text!)
+            x1 = graphView.solveFraction(fractionInput: x1TF.text!)
+        } else {
+            x1 = Double(x1TF.text!)
         }
-        else {
-            graphView.x1 = x1
-        }
-        let x2 = Double(x2TF.text!)
+        graphView.xPoint1 = x1
+        
+        var x2: Double? = 0.0
         if x2TF.text!.contains("/"){
-            graphView.x2 = graphView.solveFraction(fractionInput: x2TF.text!)
+            x2 = graphView.solveFraction(fractionInput: x2TF.text!)
         }
         else {
-            graphView.x2 = x2
+            x2 = Double(x2TF.text!)
         }
+        graphView.xPoint2 = x2
         let x = x2! - x1!
+        
         let slope = y/x
         mLBL.text = String(slope)
-        yLBL.text = "\(y1!)"
+        yLBL.text = String(graphView.pointFindIntercept(x1: x1!, x2: x2!, y1: y1!, y2: y2!))
         
         graphView.setNeedsDisplay()
     }
@@ -141,7 +153,8 @@ class GraphViewController: UIViewController {
       
         graphView.getHashValue = Double(getHashValue.value)
         hashNumberLBL.text = String(getHashValue.value)
-//        pointsEquationLBL.text = "y = mx + b"
+        mLBL.text = "m"
+        yLBL.text = "b"
         graphView.setNeedsDisplay()
     }
     

@@ -25,10 +25,10 @@ class GraphView: UIView {
     var quadBvalue: Double? = nil
     var quadCvalue: Double? = nil
     
-    var y2:Double? = nil
-    var y1:Double? = nil
-    var x1:Double? = nil
-    var x2:Double? = nil
+    var yPoint2:Double? = nil
+    var yPoint1:Double? = nil
+    var xPoint1:Double? = nil
+    var xPoint2:Double? = nil
     
     func solveFraction(fractionInput: String) -> Double? {
         let numbers = fractionInput.components(separatedBy: "/")
@@ -53,12 +53,18 @@ class GraphView: UIView {
         return newPoint
     }
     
-    func pointStandardEquation(x1:Double,x2:Double, y1:Double, y2:Double, xValue:Double)->Double{
+    func pointFindIntercept(x1:Double,x2:Double, y1:Double, y2:Double)->Double{
         var yvalue = 0.0
-        let slope = (y2-y1)/(x2-x1)
-        yvalue = (slope * xValue) + y1
+        let slope = pointFindSlope(x1: x1, x2: x2, y1: y1, y2: y2)
+        yvalue = ((slope * x1) - y1) / -1
         return yvalue
         
+    }
+    
+    func pointFindSlope(x1: Double, x2: Double, y1: Double, y2: Double) -> Double {
+        var slope = 0.0
+        slope = (y2 - y1) / (x2 - x1)
+        return slope
     }
     
     func solveStandardEquation(slope: Double, yIntercept: Double, xValue: Double) -> Double {
@@ -127,8 +133,8 @@ class GraphView: UIView {
             drawLine(slope: slope!, yIntercept: yIntercept!)
         }
         
-        if x1 != nil && x2 != nil && y1 != nil && y2 != nil{
-            drawPointsLine(x1: x1!, x2: x2!, y1: y1!, y2:y2!)
+        if xPoint1 != nil && xPoint2 != nil && yPoint1 != nil && yPoint2 != nil{
+            drawPointsLine(x1: xPoint1!, x2: xPoint2!, y1: yPoint1!, y2:yPoint2!)
         }
         
         if quadAvalue != nil && quadBvalue != nil && quadCvalue != nil {
@@ -139,23 +145,26 @@ class GraphView: UIView {
     
     func drawPointsLine(x1:Double,x2:Double, y1:Double, y2:Double) {
         
-        let funcLine = UIBezierPath()
-        funcLine.lineWidth = 1.0
+        let slope = pointFindSlope(x1: x1, x2: x2, y1: y1, y2: y2)
+        let yIntercept = pointFindIntercept(x1: x1, x2: x2, y1: y1, y2: y2)
+        
+        let pointLine = UIBezierPath()
+        pointLine.lineWidth = 1.0
         UIColor.green.setStroke()
         
-        funcLine.move(to: cartToPoints(
+        pointLine.move(to: cartToPoints(
             CGPoint(
                 x: -getHashValue * 10.0,
-                y: pointStandardEquation(x1: x1, x2: x2, y1: y1, y2:y2, xValue: (-getHashValue * 10.0))
-        )))
+                y: solveStandardEquation(slope: slope, yIntercept: yIntercept, xValue: (-getHashValue * 10.0))
+            )))
         for point in stride(from: -(getHashValue * 10.0) + getHashValue, through: getHashValue * 10.0, by: 1) {
-            funcLine.addLine(to: cartToPoints(
+            pointLine.addLine(to: cartToPoints(
                 CGPoint(
                     x: point,
-                    y: pointStandardEquation(x1: x1, x2: x2, y1: y1, y2:y2, xValue: point)
-            )))
+                    y: solveStandardEquation(slope: slope, yIntercept: yIntercept, xValue: point)
+                )))
         }
-        funcLine.stroke()
+        pointLine.stroke()
     }
         
     func drawLine(slope: Double, yIntercept: Double) {
