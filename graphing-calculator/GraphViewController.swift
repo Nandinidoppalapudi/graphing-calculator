@@ -15,7 +15,11 @@ class GraphViewController: UIViewController {
     @IBOutlet weak var y1TF: UITextField!
     @IBOutlet weak var x2TF: UITextField!
     @IBOutlet weak var y2TF: UITextField!
-    @IBOutlet weak var pointsEquationLBL: UILabel!
+
+
+    @IBOutlet weak var mLBL: UILabel!
+    
+    @IBOutlet weak var yLBL: UILabel!
     
     @IBOutlet weak var yinterceptTF: UITextField!
     @IBOutlet weak var slopeTF: UITextField!
@@ -34,7 +38,8 @@ class GraphViewController: UIViewController {
         y1TF.text = nil
         x2TF.text = nil
         y2TF.text = nil
-        pointsEquationLBL.text = "y = mx + b"
+        mLBL.text = nil
+        yLBL.text = nil
         yinterceptTF.text = nil
         graphView.yIntercept = Double(yinterceptTF.text!)
         slopeTF.text = nil
@@ -49,6 +54,41 @@ class GraphViewController: UIViewController {
     }
     
     @IBAction func graphPointsEquation(_ sender: UIButton) {
+        let y2 = Double(y2TF.text!)
+        if y2TF.text!.contains("/"){
+            graphView.y2 = graphView.solveFraction(fractionInput: y2TF.text!)
+        }
+        else {
+            graphView.y2 = y2
+        }
+        let y1 = Double(y1TF.text!)
+        if y1TF.text!.contains("/"){
+            graphView.y1 = graphView.solveFraction(fractionInput: y1TF.text!)
+        }
+        else {
+            graphView.y2 = y2
+        }
+        let y = y2! - y1!
+        let x1 = Double(x1TF.text!)
+        if x1TF.text!.contains("/"){
+            graphView.x1 = graphView.solveFraction(fractionInput: x1TF.text!)
+        }
+        else {
+            graphView.x1 = x1
+        }
+        let x2 = Double(x2TF.text!)
+        if x2TF.text!.contains("/"){
+            graphView.x2 = graphView.solveFraction(fractionInput: x2TF.text!)
+        }
+        else {
+            graphView.x2 = x2
+        }
+        let x = x2! - x1!
+        let slope = y/x
+        mLBL.text = String(slope)
+        yLBL.text = "\(y1!)"
+        
+        graphView.setNeedsDisplay()
     }
     
     @IBAction func graphStandardEquation(_ sender: UIButton) {
@@ -98,10 +138,11 @@ class GraphViewController: UIViewController {
         super.viewDidLoad()
         
         getHashValue.addTarget(self, action: #selector(GraphViewController.slideValueChanged(_:)), for: .valueChanged)
-        
+      
         graphView.getHashValue = Double(getHashValue.value)
         hashNumberLBL.text = String(getHashValue.value)
-        pointsEquationLBL.text = "y = mx + b"
+//        pointsEquationLBL.text = "y = mx + b"
+        graphView.setNeedsDisplay()
     }
     
     @objc func slideValueChanged(_ send: UISlider!) {

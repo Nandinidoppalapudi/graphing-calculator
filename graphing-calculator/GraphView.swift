@@ -25,6 +25,11 @@ class GraphView: UIView {
     var quadBvalue: Double? = nil
     var quadCvalue: Double? = nil
     
+    var y2:Double? = nil
+    var y1:Double? = nil
+    var x1:Double? = nil
+    var x2:Double? = nil
+    
     func solveFraction(fractionInput: String) -> Double? {
         let numbers = fractionInput.components(separatedBy: "/")
         let numerator = Double(numbers[0])!
@@ -46,6 +51,14 @@ class GraphView: UIView {
             y:  yHalf - ((yHashLength * Double(point.y)) / getHashValue)
         )
         return newPoint
+    }
+    
+    func pointStandardEquation(x1:Double,x2:Double, y1:Double, y2:Double, xValue:Double)->Double{
+        var yvalue = 0.0
+        let slope = (y2-y1)/(x2-x1)
+        yvalue = (slope * xValue) + y1
+        return yvalue
+        
     }
     
     func solveStandardEquation(slope: Double, yIntercept: Double, xValue: Double) -> Double {
@@ -114,10 +127,35 @@ class GraphView: UIView {
             drawLine(slope: slope!, yIntercept: yIntercept!)
         }
         
+        if x1 != nil && x2 != nil && y1 != nil && y2 != nil{
+            drawPointsLine(x1: x1!, x2: x2!, y1: y1!, y2:y2!)
+        }
+        
         if quadAvalue != nil && quadBvalue != nil && quadCvalue != nil {
             drawQuadraticLine(aValue: quadAvalue!, bValue: quadBvalue!, cValue: quadCvalue!)
         }
  
+    }
+    
+    func drawPointsLine(x1:Double,x2:Double, y1:Double, y2:Double) {
+        
+        let funcLine = UIBezierPath()
+        funcLine.lineWidth = 1.0
+        UIColor.green.setStroke()
+        
+        funcLine.move(to: cartToPoints(
+            CGPoint(
+                x: -getHashValue * 10.0,
+                y: pointStandardEquation(x1: x1, x2: x2, y1: y1, y2:y2, xValue: (-getHashValue * 10.0))
+        )))
+        for point in stride(from: -(getHashValue * 10.0) + getHashValue, through: getHashValue * 10.0, by: 1) {
+            funcLine.addLine(to: cartToPoints(
+                CGPoint(
+                    x: point,
+                    y: pointStandardEquation(x1: x1, x2: x2, y1: y1, y2:y2, xValue: point)
+            )))
+        }
+        funcLine.stroke()
     }
         
     func drawLine(slope: Double, yIntercept: Double) {
