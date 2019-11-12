@@ -40,8 +40,11 @@ class GraphViewController: UIViewController {
         slopeTF.text = nil
         graphView.slope = Double(slopeTF.text!)
         aTF.text = nil
+        graphView.quadAvalue = Double(aTF.text!)
         bTF.text = nil
+        graphView.quadBvalue = Double(bTF.text!)
         cTF.text = nil
+        graphView.quadCvalue = Double(cTF.text!)
         graphView.setNeedsDisplay()
     }
     
@@ -49,12 +52,46 @@ class GraphViewController: UIViewController {
     }
     
     @IBAction func graphStandardEquation(_ sender: UIButton) {
-        graphView.slope = Double(slopeTF.text!)
-        graphView.yIntercept = Double(yinterceptTF.text!)
+        let slope = Double(slopeTF.text!)
+        if slopeTF.text!.contains("/") {
+            graphView.slope = graphView.solveFraction(fractionInput: slopeTF.text!)
+        } else {
+            graphView.slope = slope
+        }
+            
+        let yIntercept = Double(yinterceptTF.text!)
+        if yinterceptTF.text!.contains("/") {
+            graphView.yIntercept = graphView.solveFraction(fractionInput: yinterceptTF.text!)
+        } else {
+            graphView.yIntercept = yIntercept
+        }
+        
         graphView.setNeedsDisplay()
     }
     
     @IBAction func graphQuadraticEquation(_ sender: UIButton) {
+        let aVal = Double(aTF.text!)
+        if aTF.text!.contains("/") {
+            graphView.quadAvalue = graphView.solveFraction(fractionInput: aTF.text!)
+        } else {
+            graphView.quadAvalue = aVal
+        }
+        
+        let bVal = Double(slopeTF.text!)
+        if bTF.text!.contains("/") {
+            graphView.quadBvalue = graphView.solveFraction(fractionInput: bTF.text!)
+        } else {
+            graphView.quadBvalue = bVal
+        }
+        
+        let cVal = Double(cTF.text!)
+        if cTF.text!.contains("/") {
+            graphView.quadCvalue = graphView.solveFraction(fractionInput: cTF.text!)
+        } else {
+            graphView.quadCvalue = cVal
+        }
+        
+        graphView.setNeedsDisplay()
     }
     
     override func viewDidLoad() {

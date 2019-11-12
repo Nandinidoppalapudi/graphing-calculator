@@ -21,6 +21,45 @@ class GraphView: UIView {
     var slope: Double? = nil
     var yIntercept: Double? = nil
     
+    var quadAvalue: Double? = nil
+    var quadBvalue: Double? = nil
+    var quadCvalue: Double? = nil
+    
+    func solveFraction(fractionInput: String) -> Double? {
+        let numbers = fractionInput.components(separatedBy: "/")
+        let numerator = Double(numbers[0])!
+        let denominator = Double(numbers[1])!
+        if denominator != 0 {
+            return numerator/denominator
+        } else {
+            return nil
+        }
+    }
+    
+    func cartToPoints(_ point: CGPoint) -> CGPoint {
+        let xHashLength = xHalf/10.0
+        let yHashLength = yHalf/10.0
+        
+        let newPoint: CGPoint
+        newPoint = CGPoint(
+            x: xHalf + ((xHashLength * Double(point.x)) / getHashValue),
+            y:  yHalf - ((yHashLength * Double(point.y)) / getHashValue)
+        )
+        return newPoint
+    }
+    
+    func solveStandardEquation(slope: Double, yIntercept: Double, xValue: Double) -> Double {
+        var yValue = 0.0
+        yValue = (slope * xValue) + yIntercept
+        return yValue
+    }
+    
+    func solveQuadEquation(aValue: Double, bValue: Double, cValue: Double, xValue: Double) -> Double {
+        var yValue: Double = 0
+        yValue = (aValue * pow(xValue, 2)) + (bValue * xValue) + cValue
+        return yValue
+    }
+    
     
     override func draw(_ rect: CGRect) {
         let originalHashx = xHalf/10.0
@@ -74,33 +113,53 @@ class GraphView: UIView {
         if slope != nil && yIntercept != nil {
             drawLine(slope: slope!, yIntercept: yIntercept!)
         }
+        
+        if quadAvalue != nil && quadBvalue != nil && quadCvalue != nil {
+            drawQuadraticLine(aValue: quadAvalue!, bValue: quadBvalue!, cValue: quadCvalue!)
+        }
+ 
     }
         
-        func drawLine(slope: Double, yIntercept: Double) {
-            let originalHashx = xHalf/10.0
-            let originalHashy = yHalf/10.0
-
-            let funcLine = UIBezierPath()
-            funcLine.lineWidth = 1.0
-            UIColor.blue.setStroke()
+    func drawLine(slope: Double, yIntercept: Double) {
+        
+        let funcLine = UIBezierPath()
+        funcLine.lineWidth = 1.0
+        UIColor.blue.setStroke()
             
-            var counter1 = 1.0
-            
-            funcLine.move(to: CGPoint(x: xHalf, y: yHalf - ((originalHashy * yIntercept) / getHashValue)))
-            for point in stride(from: xHalf + originalHashx, through: xLength * getHashValue, by: originalHashx) {
-                funcLine.addLine(to: CGPoint(x: point, y: yHalf - ((originalHashy * yIntercept) + (originalHashy * slope * counter1)) / getHashValue))
-                counter1 += 1
-            }
-            funcLine.stroke()
-            
-            var counter2 = 1.0
-            
-            funcLine.move(to: CGPoint(x: xHalf, y: yHalf - ((originalHashy * yIntercept) / getHashValue)))
-            for point in stride(from: xHalf - originalHashx, through: 0, by: -originalHashx) {
-                funcLine.addLine(to: CGPoint(x: point, y: yHalf - ((originalHashy * yIntercept) - (originalHashy * slope * counter2)) / getHashValue))
-                counter2 += 1
-            }
-            funcLine.stroke()
- 
+        funcLine.move(to: cartToPoints(
+            CGPoint(
+                x: -getHashValue * 10.0,
+                y: solveStandardEquation(slope: slope, yIntercept: yIntercept, xValue: (-getHashValue * 10.0))
+            )))
+        for point in stride(from: -(getHashValue * 10.0) + getHashValue, through: getHashValue * 10.0, by: 1) {
+            funcLine.addLine(to: cartToPoints(
+                CGPoint(
+                    x: point,
+                    y: solveStandardEquation(slope: slope, yIntercept: yIntercept, xValue: point)
+                )))
         }
+        funcLine.stroke()
+    }
+    
+    func drawQuadraticLine(aValue: Double, bValue: Double, cValue: Double) {
+        
+        let quadLine = UIBezierPath()
+        quadLine.lineWidth = 1.0
+        UIColor.red.setStroke()
+        
+        quadLine.move(to: cartToPoints(
+            CGPoint(
+                x: -getHashValue * 10.0,
+                y: solveQuadEquation(aValue: aValue, bValue: bValue, cValue: cValue, xValue: (-getHashValue * 10.0))
+            )))
+        for point in stride(from: -(getHashValue * 10.0) + getHashValue, through: getHashValue * 10.0, by: 0.1) {
+            quadLine.addLine(to: cartToPoints(
+                CGPoint(
+                    x: point,
+                    y: solveQuadEquation(aValue: aValue, bValue: bValue, cValue: cValue, xValue: point)
+                )))
+        }
+        quadLine.stroke()
+    }
+    
 }
