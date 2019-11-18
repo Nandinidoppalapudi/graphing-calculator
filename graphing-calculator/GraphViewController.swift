@@ -342,32 +342,25 @@ class GraphViewController: UIViewController {
                 let aVal = Double(slopeTF.text!)
                 let bVal = Double(yinterceptTF.text!)
                 if aVal == nil && bVal != nil {
-                    let ac = UIAlertController(title: "Invalid slope ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid m ", message: "Enter only numerics ",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if aVal != nil && bVal == nil {
-                    let ac = UIAlertController(title: "Invalid yintercept", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid b", message: "Enter only numerics ",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
-                    
-                else if aVal == nil && bVal == nil{
-                    let ac = UIAlertController(title: "Invalid slope and yintercept value ", message: "Enter only numerics ",preferredStyle: .alert)
-                    let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                    ac.addAction(action)
-                    self.present(ac, animated: true)
-                    
-                }
+                
                     
                     
                 else
                 {
-                    let ac = UIAlertController(title: "Invalid slope and yintercept value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid m and b value ", message: "Enter only numerics ",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
@@ -377,20 +370,20 @@ class GraphViewController: UIViewController {
         else{
             
             if slopeTF.text == "" && yinterceptTF.text != "" {
-                let ac = UIAlertController(title: " No  slope value entered", message: "Enter  slope value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: " No  m value entered", message: "Enter  slope value ",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if slopeTF.text != "" && yinterceptTF.text == "" {
-                let ac = UIAlertController(title: " No yintercept value entered", message: "Enter  yintercept value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: " No b value entered", message: "Enter  yintercept value ",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
                 
             else if slopeTF.text == "" && yinterceptTF.text == ""{
-                let ac = UIAlertController(title: " No slope and yintercept ", message: "Enter slope and yintercept value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: " No m and b value entered ", message: "Enter slope and yintercept value ",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
