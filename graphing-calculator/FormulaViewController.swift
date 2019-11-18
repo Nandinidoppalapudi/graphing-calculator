@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Darwin
 
 class FormulaViewController: UIViewController {
     
@@ -28,24 +29,36 @@ class FormulaViewController: UIViewController {
     @IBAction func Calculate(_ sender: Any) {
         if enterA.text != "" && enterB.text != "" && enterC.text != ""{
             if let enterA=Double(enterA.text!),let enterB=Double(enterB.text!),let enterC=Double(enterC.text!){
-                if enterA != nil && enterB != nil && enterC != nil{
-                    let subpart1 = enterB*enterB
-                    let subpart2 = 4*enterA*enterC
-                    let subpart3 = subpart1-subpart2
-                    func squareroot()->Double{
-                        let subpart = Double(enterB*enterB)-Double(4*enterA*enterC)
-                        return subpart
-                    }
-                    let qudraticaFormula = -enterB + squareroot()/(2*enterA)
-                    let qudraticaFormulaFormat = String(format: "%.2f", qudraticaFormula)
-                    solution1.text = "\(qudraticaFormulaFormat)"
-                    
-                    let quadraticFormula1 = -enterB - squareroot()/(2*enterA)
-                    let qudraticaFormulaFormat1 = String(format: "%.2f", quadraticFormula1)
-                    solution2.text = "\(qudraticaFormulaFormat1)"
+                if enterA == 0.0{
+                    let ac = UIAlertController(title: "Zero Value", message: "A value cannot be zero",
+                                               preferredStyle: .alert)
+                    let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    ac.addAction(action)
+                    self.present(ac, animated: true)
                 }
-                
+                else{
+                    let discriminant = Double(enterB*enterB)-Double(4*enterA*enterC)
+                    let isImaginary = discriminant < 0
+                    let discrimimantAbsSqrt = sqrt(fabs(discriminant))
+                    if isImaginary {
+                        let qudraticaFormulaFormat1 = String(format: "%.2f", discrimimantAbsSqrt)
+                        solution1.text = "(\(-enterB) + \(qudraticaFormulaFormat1)i)/\(2*enterA))"
+                        let qudraticaFormulaFormat2 = String(format: "%.2f", discrimimantAbsSqrt)
+                        solution2.text = "(\(-enterB) - \(qudraticaFormulaFormat2)i)/\(2*enterA))"
+                        
+                    }
+                    else{
+                        let qudraticaFormula = ((-enterB) + (discrimimantAbsSqrt))/(2*enterA)
+                        let qudraticaFormulaFormat = String(format: "%.2f", qudraticaFormula)
+                        solution1.text = "\(qudraticaFormulaFormat)"
+                        
+                        let quadraticFormula1 = ((-enterB) - (discrimimantAbsSqrt))/(2*enterA)
+                        let qudraticaFormulaFormat1 = String(format: "%.2f", quadraticFormula1)
+                        solution2.text = "\(qudraticaFormulaFormat1)"
+                    }
+                }
             }
+                
             else{
                 let  valueA:Double? = Double(enterA.text!)
                 let  valueB:Double? = Double(enterB.text!)
@@ -98,6 +111,7 @@ class FormulaViewController: UIViewController {
                     self.present(ac, animated: true)
                     
                 }
+                    
                 else
                 {
                     let ac = UIAlertController(title: "Invalid A,B,C Svalue ", message: "Enter only numerics ",
@@ -166,4 +180,5 @@ class FormulaViewController: UIViewController {
     
     
 }
+
 
