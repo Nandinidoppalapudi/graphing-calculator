@@ -67,6 +67,15 @@ class GraphViewController: UIViewController {
         var x2: Double? = 0.0
         if x1TF.text != "" && x2TF.text != "" && y1TF.text != "" && y2TF.text != ""  {
             if let X1 = Double(x1TF.text!),let X2 = Double(x2TF.text!),let Y1 = Double(y1TF.text!),let Y2 = Double(y2TF.text!){
+                if X2-X1 == 0.0{
+                    let ac = UIAlertController(title: "Zero Value", message: "X2 and X1 cannot have same value",
+                                               preferredStyle: .alert)
+                    let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    ac.addAction(action)
+                    self.present(ac, animated: true)
+                }
+                
+                else{
                 if y2TF.text!.contains("/") && y1TF.text!.contains("/") && x1TF.text!.contains("/") && x2TF.text!.contains("/"){
                     y2 = graphView.solveFraction(fractionInput: y2TF.text!)
                     y1 = graphView.solveFraction(fractionInput: y1TF.text!)
@@ -87,10 +96,14 @@ class GraphViewController: UIViewController {
                 let x = x2! - x1!
                 
                 let slope = y/x
-                mLBL.text = String(slope)
-                yLBL.text = String(graphView.pointFindIntercept(x1: x1!, x2: x2!, y1: y1!, y2: y2!))
+                let slope1 = String(format: "%.2f", slope)
+                mLBL.text = "\(slope1)"
+                let yintercept = String(graphView.pointFindIntercept(x1: x1!, x2: x2!, y1: y1!, y2: y2!))
+                let yinterceptFormat = String(format: "%.2f", yintercept)
+                yLBL.text = "\(yinterceptFormat)"
                 graphView.setNeedsDisplay()
                 
+            }
             }
             else{
                 let X1 = Double(x1TF.text!)
