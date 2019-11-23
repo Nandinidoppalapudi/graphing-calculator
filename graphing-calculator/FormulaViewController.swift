@@ -19,10 +19,13 @@ class FormulaViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var solution1: UILabel!
     
     @IBOutlet weak var solution2: UILabel!
-    
+    //button to calculate the x intercept values of the quadratic formula
     @IBAction func Calculate(_ sender: Any) {
+        //checks that all values contain something
         if enterA.text != "" && enterB.text != "" && enterC.text != ""{
+            //checks the see if the values are correct
             if let enterA=Double(enterA.text!),let enterB=Double(enterB.text!),let enterC=Double(enterC.text!){
+                //prevents a divide by zero error
                 if enterA == 0.0{
                     let ac = UIAlertController(title: "Zero Value", message: "A value cannot be zero",
                                                preferredStyle: .alert)
@@ -52,7 +55,7 @@ class FormulaViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             }
-                
+            //catches invalid values entered
             else{
                 let  valueA:Double? = Double(enterA.text!)
                 let  valueB:Double? = Double(enterB.text!)
@@ -116,6 +119,7 @@ class FormulaViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+        //catches if any values were empty
         else{
             
             if enterA.text == "" && enterB.text != "" && enterC.text != ""{
@@ -173,14 +177,15 @@ class FormulaViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //sets up the text field delegate
         enterA.delegate = self
         enterB.delegate = self
         enterC.delegate = self
-        
+        //makes observer to catch keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
+    //function to move the view and display the keyboard
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0 {
@@ -188,13 +193,13 @@ class FormulaViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
+    //function to return the view and hides the keyboard
     @objc func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
         }
     }
-    
+    //function that returns the keyboard
     @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         enterA.resignFirstResponder()
         enterB.resignFirstResponder()

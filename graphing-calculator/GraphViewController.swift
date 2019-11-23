@@ -33,6 +33,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var getHashValue: UISlider!
     @IBOutlet weak var hashNumberLBL: UILabel!
     
+    //button that clears the graph from all of the lines
     @IBAction func clearGraph(_ sender: UIButton) {
         x1TF.text = nil
         graphView.xPoint1 = Double(x1TF.text!)
@@ -60,12 +61,15 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
         graphView.setNeedsDisplay()
     }
     
+    //button that sets values in the graph view so that the function between the two points will draw
     @IBAction func graphPointsEquation(_ sender: UIButton) {
         var y2: Double? = 0.0
         var y1: Double? = 0.0
         var x1: Double? = 0.0
         var x2: Double? = 0.0
+        //checks to see if the values contain values
         if x1TF.text != "" && x2TF.text != "" && y1TF.text != "" && y2TF.text != ""  {
+            //checks to see if any fractions are entered, also adds validations for incorrect values
             if y2TF.text!.contains("/") || y1TF.text!.contains("/") || x2TF.text!.contains("/") || x1TF.text!.contains("/") {
                 if y2TF.text!.contains("/") {
                     y2 = graphView.solveFraction(fractionInput: y2TF.text!)
@@ -126,7 +130,9 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
                 yLBL.text = "\(yinterceptFormat)"
                 graphView.setNeedsDisplay()
             }
+            //checks to prove if the values are correct
             else if let X1 = Double(x1TF.text!),let X2 = Double(x2TF.text!),let Y1 = Double(y1TF.text!),let Y2 = Double(y2TF.text!){
+                //prevents the drawing of a undefined line
                 if X2-X1 == 0.0{
                     let ac = UIAlertController(title: "Zero Value", message: "X2 and X1 cannot have same value",
                                                preferredStyle: .alert)
@@ -157,6 +163,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
                     graphView.setNeedsDisplay()
                 }
             }
+            //catches if any values are incorrect
             else{
                 let X1 = Double(x1TF.text!)
                 let X2 = Double(x2TF.text!)
@@ -269,6 +276,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+        //checks to see if some values do not contain anything
         else{
             let X1 = (x1TF.text!)
             let X2 = (x2TF.text!)
@@ -386,11 +394,13 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    
+    //button to assign the values to the graph view and draw the standard equation
     @IBAction func graphStandardEquation(_ sender: UIButton) {
         var m: Double? = 0.0
         var b: Double? = 0.0
+        //checks to see if the values contain anything
         if slopeTF.text != "" && yinterceptTF.text != "" {
+            //catches if any fractions are entered also checks to see if values are not incorrect
             if slopeTF.text!.contains("/") || yinterceptTF.text!.contains("/"){
                 if slopeTF.text!.contains("/") {
                     m = graphView.solveFraction(fractionInput: slopeTF.text!)
@@ -419,6 +429,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
                 graphView.setNeedsDisplay()
         
             }
+            //checks to see if the values are correct values and alerts when a value is invalid
             else if let slope = Double(slopeTF.text!),let yInt = Double(yinterceptTF.text!){
                 let yIntercept = Double(yinterceptTF.text!)
                 graphView.slope = slope
@@ -454,6 +465,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+        //catches if any values are empty
         else{
             
             if slopeTF.text == "" && yinterceptTF.text != "" {
@@ -486,12 +498,14 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    
+    //button to assign values to graph view to draw the quadratic equation
     @IBAction func graphQuadraticEquation(_ sender: UIButton) {
         var a: Double? = 0.0
         var b: Double? = 0.0
         var c: Double? = 0.0
+        //checks to see if all values contain something
         if aTF.text != "" && bTF.text != "" && cTF.text != ""{
+            //catches any fractions entered and checks for invalid values
             if aTF.text!.contains("/") || bTF.text!.contains("/") || cTF.text!.contains("/"){
                 if aTF.text!.contains("/") {
                     a = graphView.solveFraction(fractionInput: aTF.text!)
@@ -532,6 +546,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
                 graphView.setNeedsDisplay()
                 
             }
+            //checks to see if values are correct, and catches any invalid values
             else if let aVal = Double(aTF.text!),let bVal = Double(bTF.text!),let cVal = Double(cTF.text!){
                 graphView.quadAvalue = aVal
                 graphView.quadBvalue = bVal
@@ -595,6 +610,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+        //checks to see if any values are empty
         else{
             
             if aTF.text == "" && bTF.text != "" && cTF.text != ""{
@@ -645,15 +661,15 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //sets up a UISlider for scaling method
         getHashValue.addTarget(self, action: #selector(GraphViewController.slideValueChanged(_:)), for: .valueChanged)
-        
+        //displays the default values for point equation and the hash values
         graphView.getHashValue = Double(getHashValue.value)
         hashNumberLBL.text = String(getHashValue.value)
         mLBL.text = "m"
         yLBL.text = "b"
         graphView.setNeedsDisplay()
-        
+        //sets up the text field delegate
         x1TF.delegate = self
         x2TF.delegate = self
         y1TF.delegate = self
@@ -665,12 +681,12 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
         aTF.delegate = self
         bTF.delegate = self
         cTF.delegate = self
-        
+        //adds observers for keyboard return values
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
-    
+    //function that moves the view and displays the keyboard
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0 {
@@ -678,12 +694,13 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
+    //function that moves the view back down and hides the keyboard
     @objc func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
         }
     }
-    
+    //function that allows the keyboard to return
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         x1TF.resignFirstResponder()
         x2TF.resignFirstResponder()
@@ -699,7 +716,7 @@ class GraphViewController: UIViewController, UITextFieldDelegate {
         
         return true
     }
-    
+    //function that implements the UISlider to pick the range and assign the scale value
     @objc func slideValueChanged(_ send: UISlider!) {
         let roundedValue = roundf(send.value)
         send.value = roundedValue

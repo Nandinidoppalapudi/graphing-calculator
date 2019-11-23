@@ -8,6 +8,7 @@
 
 import UIKit
 
+//Create class to draw the graph
 class GraphView: UIView {
 
     let xLength = 375.0
@@ -30,6 +31,7 @@ class GraphView: UIView {
     var xPoint1:Double? = nil
     var xPoint2:Double? = nil
     
+    //function to convert the string fraction into a double value
     func solveFraction(fractionInput: String) -> Double? {
         let numbers = fractionInput.components(separatedBy: "/")
         let numerator = Double(numbers[0])!
@@ -41,6 +43,7 @@ class GraphView: UIView {
         }
     }
     
+    //function to convert CGPoints into normal graphing points
     func cartToPoints(_ point: CGPoint) -> CGPoint {
         let xHashLength = xHalf/10.0
         let yHashLength = yHalf/10.0
@@ -53,6 +56,7 @@ class GraphView: UIView {
         return newPoint
     }
     
+    //function to find the y intercept of a function using two points
     func pointFindIntercept(x1:Double,x2:Double, y1:Double, y2:Double)->Double{
         var yvalue = 0.0
         let slope = pointFindSlope(x1: x1, x2: x2, y1: y1, y2: y2)
@@ -61,29 +65,33 @@ class GraphView: UIView {
         
     }
     
+    //function to find the slope of a function using two points
     func pointFindSlope(x1: Double, x2: Double, y1: Double, y2: Double) -> Double {
         var slope = 0.0
         slope = (y2 - y1) / (x2 - x1)
         return slope
     }
     
+    //function to calculate y value for a standard equation
     func solveStandardEquation(slope: Double, yIntercept: Double, xValue: Double) -> Double {
         var yValue = 0.0
         yValue = (slope * xValue) + yIntercept
         return yValue
     }
     
+    //function to calculate y value for a quadratic equation
     func solveQuadEquation(aValue: Double, bValue: Double, cValue: Double, xValue: Double) -> Double {
         var yValue: Double = 0
         yValue = (aValue * pow(xValue, 2)) + (bValue * xValue) + cValue
         return yValue
     }
     
-    
+    //function to implement draw
     override func draw(_ rect: CGRect) {
         let originalHashx = xHalf/10.0
         let originalHashy = yHalf/10.0
         
+        //path that draws the y line
         let yLine = UIBezierPath()
         yLine.lineWidth = 1.0
         UIColor.black.setStroke()
@@ -91,6 +99,7 @@ class GraphView: UIView {
         yLine.addLine(to: CGPoint(x: xHalf, y: yLength))
         yLine.stroke()
         
+        //path that draws the x line
         let xLine = UIBezierPath()
         xLine.lineWidth = 1.0
         UIColor.black.setStroke()
@@ -98,6 +107,7 @@ class GraphView: UIView {
         xLine.addLine(to: CGPoint(x: xLength, y: yHalf))
         xLine.stroke()
         
+        //path that draws the hash marks for the x line
         let xHash = UIBezierPath()
         xHash.lineWidth = 1.0
         UIColor.black.setStroke()
@@ -113,6 +123,7 @@ class GraphView: UIView {
             xHash.stroke()
         }
         
+        //path that draws the hash marks for the y line
         let yHash = UIBezierPath()
         yHash.lineWidth = 1.0
         UIColor.black.setStroke()
@@ -129,20 +140,24 @@ class GraphView: UIView {
             
         }
         
+        //will execute the drawLine function
         if slope != nil && yIntercept != nil {
             drawLine(slope: slope!, yIntercept: yIntercept!)
         }
         
+        //will execute the drawPointsLine function
         if xPoint1 != nil && xPoint2 != nil && yPoint1 != nil && yPoint2 != nil{
             drawPointsLine(x1: xPoint1!, x2: xPoint2!, y1: yPoint1!, y2:yPoint2!)
         }
         
+        //will execute the drawQuadraticLine function
         if quadAvalue != nil && quadBvalue != nil && quadCvalue != nil {
             drawQuadraticLine(aValue: quadAvalue!, bValue: quadBvalue!, cValue: quadCvalue!)
         }
  
     }
     
+    //function that draws the line equation using two points
     func drawPointsLine(x1:Double,x2:Double, y1:Double, y2:Double) {
         
         let slope = pointFindSlope(x1: x1, x2: x2, y1: y1, y2: y2)
@@ -166,7 +181,8 @@ class GraphView: UIView {
         }
         pointLine.stroke()
     }
-        
+    
+    //function to draw the line of the standard line equation
     func drawLine(slope: Double, yIntercept: Double) {
         
         let funcLine = UIBezierPath()
@@ -188,6 +204,7 @@ class GraphView: UIView {
         funcLine.stroke()
     }
     
+    //function to draw the line of the quadratic equation
     func drawQuadraticLine(aValue: Double, bValue: Double, cValue: Double) {
         
         let quadLine = UIBezierPath()

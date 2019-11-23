@@ -18,7 +18,7 @@ class InfoViewController: UIViewController {
     override func viewDidLoad()
     {
     super.viewDidLoad()
-    
+    //Displays common equation information using strings and bullet points
     let bullet1 = "Slope-Intercept  : y=mx+b where m is the slope and b is the y-intercept.\n"
     let bullet2 = "Point-Slope  : y-y1=m(x-x1) where m is the slope and (x, y) is the point on the line.\n"
     let bullet3 = "Standard :   Ax+By=C where A,B,C are constants.\n"
