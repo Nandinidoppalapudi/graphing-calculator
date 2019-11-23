@@ -64,7 +64,7 @@ class FormulaViewController: UIViewController {
                 let  valueB:Double? = Double(enterB.text!)
                 let  valueC:Double? = Double(enterC.text!)
                 if valueA == nil && valueB != nil && valueC != nil{
-                    let ac = UIAlertController(title: "Invalid A value ", message: "Enter only numerics ",
+                    let ac = UIAlertController(title: "Invalid A value", message: "Enter only numerics",
                                                preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
@@ -72,7 +72,7 @@ class FormulaViewController: UIViewController {
                     
                 }
                 else if valueA != nil && valueB == nil && valueC != nil{
-                    let ac = UIAlertController(title: "Invalid B value ", message: "Enter only numerics ",
+                    let ac = UIAlertController(title: "Invalid B value", message: "Enter only numerics",
                                                preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
@@ -80,7 +80,7 @@ class FormulaViewController: UIViewController {
                     
                 }
                 else if valueA != nil && valueB != nil && valueC == nil{
-                    let ac = UIAlertController(title: "Invalid C value ", message: "Enter only numerics ",
+                    let ac = UIAlertController(title: "Invalid C value", message: "Enter only numerics",
                                                preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
@@ -88,7 +88,7 @@ class FormulaViewController: UIViewController {
                     
                 }
                 else if valueA == nil && valueB == nil && valueC != nil{
-                    let ac = UIAlertController(title: "Invalid A and B value ", message: "Enter only numerics ",
+                    let ac = UIAlertController(title: "Invalid A and B value", message: "Enter only numerics",
                                                preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
@@ -96,7 +96,7 @@ class FormulaViewController: UIViewController {
                     
                 }
                 else if valueA != nil && valueB == nil && valueC == nil{
-                    let ac = UIAlertController(title: "Invalid B and C value ", message: "Enter only numerics ",
+                    let ac = UIAlertController(title: "Invalid B and C value", message: "Enter only numerics",
                                                preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
@@ -104,7 +104,7 @@ class FormulaViewController: UIViewController {
                     
                 }
                 else if valueA == nil && valueB != nil && valueC == nil{
-                    let ac = UIAlertController(title: "Invalid A and C value ", message: "Enter only numerics ",
+                    let ac = UIAlertController(title: "Invalid A and C value", message: "Enter only numerics",
                                                preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
@@ -114,7 +114,7 @@ class FormulaViewController: UIViewController {
                     
                 else
                 {
-                    let ac = UIAlertController(title: "Invalid A,B,C Svalue ", message: "Enter only numerics ",
+                    let ac = UIAlertController(title: "Invalid A,B,C value", message: "Enter only numerics",
                                                preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
@@ -125,42 +125,42 @@ class FormulaViewController: UIViewController {
         else{
             
             if enterA.text == "" && enterB.text != "" && enterC.text != ""{
-                let ac = UIAlertController(title: " No A value entered", message: "Enter  A value ",
+                let ac = UIAlertController(title: "No A value entered", message: "Enter A value",
                                            preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if enterA.text != "" && enterB.text == "" && enterC.text != ""{
-                let ac = UIAlertController(title: " No B value entered", message: "Enter  B value ",
+                let ac = UIAlertController(title: "No B value entered", message: "Enter B value",
                                            preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if enterA.text != "" && enterB.text != "" && enterC.text == ""{
-                let ac = UIAlertController(title: " No C value entered", message: "Enter  C value ",
+                let ac = UIAlertController(title: "No C value entered", message: "Enter C value",
                                            preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if enterA.text != "" && enterB.text == "" && enterC.text == ""{
-                let ac = UIAlertController(title: " No B  and c value entered", message: "Enter  B and c value ",
+                let ac = UIAlertController(title: "No B and C value entered", message: "Enter B and C value",
                                            preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if enterA.text == "" && enterB.text != "" && enterC.text == ""{
-                let ac = UIAlertController(title: " No A and C value entered", message: "Enter A and C value ",
+                let ac = UIAlertController(title: "No A and C value entered", message: "Enter A and C value",
                                            preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if enterA.text == "" && enterB.text == "" && enterC.text != ""{
-                let ac = UIAlertController(title: " No A and B value entered", message: "Enter A and C value ",
+                let ac = UIAlertController(title: "No A and B value entered", message: "Enter A and C value",
                                            preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
@@ -168,7 +168,7 @@ class FormulaViewController: UIViewController {
             }
                 
             else{
-                let ac = UIAlertController(title: "No A,B,C value entered", message: "Enter  A,B,C value ",
+                let ac = UIAlertController(title: "No A,B,C value entered", message: "Enter A,B,C value",
                                            preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Darwin
 
 class GraphViewController: UIViewController {
     
@@ -66,27 +67,50 @@ class GraphViewController: UIViewController {
         var x1: Double? = 0.0
         var x2: Double? = 0.0
         if x1TF.text != "" && x2TF.text != "" && y1TF.text != "" && y2TF.text != ""  {
-            if let X1 = Double(x1TF.text!),let X2 = Double(x2TF.text!),let Y1 = Double(y1TF.text!),let Y2 = Double(y2TF.text!){
-                if X2-X1 == 0.0{
-                    let ac = UIAlertController(title: "Zero Value", message: "X2 and X1 cannot have same value",
-                                               preferredStyle: .alert)
-                    let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                    ac.addAction(action)
-                    self.present(ac, animated: true)
-                }
-                
-                else{
-                if y2TF.text!.contains("/") && y1TF.text!.contains("/") && x1TF.text!.contains("/") && x2TF.text!.contains("/"){
+            if y2TF.text!.contains("/") || y1TF.text!.contains("/") || x2TF.text!.contains("/") || x1TF.text!.contains("/") {
+                if y2TF.text!.contains("/") {
                     y2 = graphView.solveFraction(fractionInput: y2TF.text!)
-                    y1 = graphView.solveFraction(fractionInput: y1TF.text!)
-                    x2 = graphView.solveFraction(fractionInput: x2TF.text!)
-                    x1 = graphView.solveFraction(fractionInput: x1TF.text!)
-                    
                 } else {
                     y2 = Double(y2TF.text!)
+                    if y2 == nil {
+                        let ac = UIAlertController(title: "Invalid Y2 value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
+                }
+                if y1TF.text!.contains("/") {
+                    y1 = graphView.solveFraction(fractionInput: y1TF.text!)
+                } else {
                     y1 = Double(y1TF.text!)
-                    x1 = Double(x1TF.text!)
+                    if y1 == nil {
+                        let ac = UIAlertController(title: "Invalid Y1 value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
+                }
+                if x2TF.text!.contains("/") {
+                    x2 = graphView.solveFraction(fractionInput: x2TF.text!)
+                } else {
                     x2 = Double(x2TF.text!)
+                    if x2 == nil {
+                        let ac = UIAlertController(title: "Invalid X2 value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
+                }
+                if x1TF.text!.contains("/") {
+                    x1 = graphView.solveFraction(fractionInput: x1TF.text!)
+                } else {
+                    x1 = Double(x1TF.text!)
+                    if x1 == nil {
+                        let ac = UIAlertController(title: "Invalid X1 value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
                 }
                 graphView.yPoint2 = y2
                 graphView.yPoint1 = y1
@@ -98,12 +122,41 @@ class GraphViewController: UIViewController {
                 let slope = y/x
                 let slope1 = String(format: "%.2f", slope)
                 mLBL.text = "\(slope1)"
-                let yintercept = String(graphView.pointFindIntercept(x1: x1!, x2: x2!, y1: y1!, y2: y2!))
+                let yintercept = graphView.pointFindIntercept(x1: x1!, x2: x2!, y1: y1!, y2: y2!)
                 let yinterceptFormat = String(format: "%.2f", yintercept)
                 yLBL.text = "\(yinterceptFormat)"
                 graphView.setNeedsDisplay()
-                
             }
+            else if let X1 = Double(x1TF.text!),let X2 = Double(x2TF.text!),let Y1 = Double(y1TF.text!),let Y2 = Double(y2TF.text!){
+                if X2-X1 == 0.0{
+                    let ac = UIAlertController(title: "Zero Value", message: "X2 and X1 cannot have same value",
+                                               preferredStyle: .alert)
+                    let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    ac.addAction(action)
+                    self.present(ac, animated: true)
+                }
+                
+                else{
+                    y2 = Double(y2TF.text!)
+                    y1 = Double(y1TF.text!)
+                    x1 = Double(x1TF.text!)
+                    x2 = Double(x2TF.text!)
+                    
+                    graphView.yPoint2 = y2
+                    graphView.yPoint1 = y1
+                    let y = y2! - y1!
+                    graphView.xPoint1 = x1
+                    graphView.xPoint2 = x2
+                    let x = x2! - x1!
+                
+                    let slope = y/x
+                    let slope1 = String(format: "%.2f", slope)
+                    mLBL.text = "\(slope1)"
+                    let yintercept = graphView.pointFindIntercept(x1: x1!, x2: x2!, y1: y1!, y2: y2!)
+                    let yinterceptFormat = String(format: "%.2f", yintercept)
+                    yLBL.text = "\(yinterceptFormat)"
+                    graphView.setNeedsDisplay()
+                }
             }
             else{
                 let X1 = Double(x1TF.text!)
@@ -111,84 +164,84 @@ class GraphViewController: UIViewController {
                 let Y1 = Double(y1TF.text!)
                 let Y2 = Double(y2TF.text!)
                 if X1 == nil && X2 != nil && Y1 != nil && Y2 != nil {
-                    let ac = UIAlertController(title: "Invalid X1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X1 value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 != nil && X2 == nil && Y1 != nil && Y2 != nil {
-                    let ac = UIAlertController(title: "Invalid X2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X2 value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 != nil && X2 != nil && Y1 == nil && Y2 != nil {
-                    let ac = UIAlertController(title: "Invalid Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid Y1 value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 != nil && X2 != nil && Y1 != nil && Y2 == nil {
-                    let ac = UIAlertController(title: "Invalid Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid Y2 value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 == nil && X2 == nil && Y1 != nil && Y2 != nil {
-                    let ac = UIAlertController(title: "Invalid X1 AND X2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X1 and X2 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 != nil && X2 == nil && Y1 == nil && Y2 != nil {
-                    let ac = UIAlertController(title: "Invalid X2 AND Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X2 and Y1 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 != nil && X2 == nil && Y1 != nil && Y2 == nil {
-                    let ac = UIAlertController(title: "Invalid X2 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X2 and Y2 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 != nil && X2 != nil && Y1 == nil && Y2 == nil {
-                    let ac = UIAlertController(title: "Invalid Y1 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid Y1 and Y2 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 == nil && X2 != nil && Y1 != nil && Y2 == nil {
-                    let ac = UIAlertController(title: "Invalid X1 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X1 and Y2 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 == nil && X2 != nil && Y1 == nil && Y2 != nil {
-                    let ac = UIAlertController(title: "Invalid X1 AND Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X1 and Y1 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 == nil && X2 == nil && Y1 == nil && Y2 != nil {
-                    let ac = UIAlertController(title: "Invalid X1, X2 AND Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X1, X2 and Y1 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if X1 != nil && X2 == nil && Y1 == nil && Y2 == nil {
-                    let ac = UIAlertController(title: "Invalid X2, Y1 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X2, Y1 and Y2 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
@@ -202,17 +255,15 @@ class GraphViewController: UIViewController {
                     
                 }
                 else if X1 == nil && X2 == nil && Y1 != nil && Y2 == nil {
-                    let ac = UIAlertController(title: "Invalid X1, X2 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X1, X2 and Y2 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
-                    
-                    
                 else
                 {
-                    let ac = UIAlertController(title: "Invalid X1, X2, Y1, Y2 values ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid X1, X2, Y1, Y2 values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
@@ -225,98 +276,98 @@ class GraphViewController: UIViewController {
             let Y1 = (y1TF.text!)
             let Y2 = (y2TF.text!)
             if X1 == "" && X2 != "" && Y1 != "" && Y2 != "" {
-                let ac = UIAlertController(title: "No X1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1 value entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 != "" && X2 == "" && Y1 != "" && Y2 != "" {
-                let ac = UIAlertController(title: "No X2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X2 value entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 != "" && X2 != "" && Y1 == "" && Y2 != "" {
-                let ac = UIAlertController(title: "No Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No Y1 value entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 != "" && X2 != "" && Y1 != "" && Y2 == "" {
-                let ac = UIAlertController(title: "No Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No Y2 value entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 == "" && X2 == "" && Y1 != "" && Y2 != "" {
-                let ac = UIAlertController(title: "No X1 AND X2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1 and X2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 != "" && X2 == "" && Y1 == "" && Y2 != "" {
-                let ac = UIAlertController(title: "No X2 AND Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X2 and Y1 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 != "" && X2 == "" && Y1 != "" && Y2 == "" {
-                let ac = UIAlertController(title: "No X2 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X2 and Y2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 != "" && X2 != "" && Y1 == "" && Y2 == "" {
-                let ac = UIAlertController(title: "No Y1 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No Y1 and Y2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 == "" && X2 != "" && Y1 != "" && Y2 == "" {
-                let ac = UIAlertController(title: "No X1 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1 and Y2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 == "" && X2 != "" && Y1 == "" && Y2 != "" {
-                let ac = UIAlertController(title: "No X1 AND Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1 and Y1 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 == "" && X2 == "" && Y1 == "" && Y2 != "" {
-                let ac = UIAlertController(title: "No X1, X2 AND Y1 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1, X2 and Y1 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 != "" && X2 == "" && Y1 == "" && Y2 == "" {
-                let ac = UIAlertController(title: "No X2, Y1 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X2, Y1 and Y2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 == "" && X2 != "" && Y1 == "" && Y2 == "" {
-                let ac = UIAlertController(title: "No X1, Y1 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1, Y1 and Y2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
                 
             }
             else if X1 == "" && X2 == "" && Y1 != "" && Y2 == "" {
-                let ac = UIAlertController(title: "No X1, X2 AND Y2 value ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1, X2 and Y2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
@@ -327,7 +378,7 @@ class GraphViewController: UIViewController {
                 
             else
             {
-                let ac = UIAlertController(title: "No X1, X2, Y1, Y2 values ", message: "Enter only numerics ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No X1, X2, Y1, Y2 values entered", message: "Enter only numerics",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
@@ -338,31 +389,55 @@ class GraphViewController: UIViewController {
     
     
     @IBAction func graphStandardEquation(_ sender: UIButton) {
-        
+        var m: Double? = 0.0
+        var b: Double? = 0.0
         if slopeTF.text != "" && yinterceptTF.text != "" {
-            if let slope = Double(slopeTF.text!),let _ = Double(yinterceptTF.text!){
-                let yIntercept = Double(yinterceptTF.text!)
-                if slopeTF.text!.contains("/") && yinterceptTF.text!.contains("/"){
-                    graphView.slope = graphView.solveFraction(fractionInput: slopeTF.text!)
-                    graphView.yIntercept = graphView.solveFraction(fractionInput: yinterceptTF.text!)
+            if slopeTF.text!.contains("/") || yinterceptTF.text!.contains("/"){
+                if slopeTF.text!.contains("/") {
+                    m = graphView.solveFraction(fractionInput: slopeTF.text!)
                 } else {
-                    graphView.slope = slope
-                    graphView.yIntercept = yIntercept
+                    m = Double(slopeTF.text!)
+                    if m == nil {
+                        let ac = UIAlertController(title: "Invalid m value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
                 }
+                if yinterceptTF.text!.contains("/") {
+                    b = graphView.solveFraction(fractionInput: yinterceptTF.text!)
+                } else {
+                    b = Double(yinterceptTF.text!)
+                    if b == nil {
+                        let ac = UIAlertController(title: "Invalid b value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
+                }
+                graphView.slope = m
+                graphView.yIntercept = b
+                graphView.setNeedsDisplay()
+        
+            }
+            else if let slope = Double(slopeTF.text!),let yInt = Double(yinterceptTF.text!){
+                let yIntercept = Double(yinterceptTF.text!)
+                graphView.slope = slope
+                graphView.yIntercept = yIntercept
                 graphView.setNeedsDisplay()
             }
             else{
-                let aVal = Double(slopeTF.text!)
+                let mVal = Double(slopeTF.text!)
                 let bVal = Double(yinterceptTF.text!)
-                if aVal == nil && bVal != nil {
-                    let ac = UIAlertController(title: "Invalid m ", message: "Enter only numerics ",preferredStyle: .alert)
+                if mVal == nil && bVal != nil {
+                    let ac = UIAlertController(title: "Invalid m value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
-                else if aVal != nil && bVal == nil {
-                    let ac = UIAlertController(title: "Invalid b", message: "Enter only numerics ",preferredStyle: .alert)
+                else if mVal != nil && bVal == nil {
+                    let ac = UIAlertController(title: "Invalid b value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
@@ -373,7 +448,7 @@ class GraphViewController: UIViewController {
                     
                 else
                 {
-                    let ac = UIAlertController(title: "Invalid m and b value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid m and b values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
@@ -383,27 +458,27 @@ class GraphViewController: UIViewController {
         else{
             
             if slopeTF.text == "" && yinterceptTF.text != "" {
-                let ac = UIAlertController(title: " No  m value entered", message: "Enter  slope value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No m value entered", message: "Enter slope value",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if slopeTF.text != "" && yinterceptTF.text == "" {
-                let ac = UIAlertController(title: " No b value entered", message: "Enter  yintercept value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No b value entered", message: "Enter y intercept value",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
                 
             else if slopeTF.text == "" && yinterceptTF.text == ""{
-                let ac = UIAlertController(title: " No m and b value entered ", message: "Enter slope and yintercept value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No m and b values entered", message: "Enter slope and y intercept values",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
                 
             else{
-                let ac = UIAlertController(title: "No slope and yintercept", message: "Enter  slope and yintercept ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No m and b values entered", message: "Enter slope and y intercept values",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
@@ -414,19 +489,54 @@ class GraphViewController: UIViewController {
     
     
     @IBAction func graphQuadraticEquation(_ sender: UIButton) {
+        var a: Double? = 0.0
+        var b: Double? = 0.0
+        var c: Double? = 0.0
         if aTF.text != "" && bTF.text != "" && cTF.text != ""{
-            if let aVal = Double(aTF.text!),let bVal = Double(bTF.text!),let cVal = Double(cTF.text!){
-                
-                if aTF.text!.contains("/") && bTF.text!.contains("/") && cTF.text!.contains("/"){
-                    graphView.quadAvalue = graphView.solveFraction(fractionInput: aTF.text!)
-                    graphView.quadBvalue = graphView.solveFraction(fractionInput: bTF.text!)
-                    graphView.quadCvalue = graphView.solveFraction(fractionInput: cTF.text!)
-                    
+            if aTF.text!.contains("/") || bTF.text!.contains("/") || cTF.text!.contains("/"){
+                if aTF.text!.contains("/") {
+                    a = graphView.solveFraction(fractionInput: aTF.text!)
                 } else {
-                    graphView.quadAvalue = aVal
-                    graphView.quadBvalue = bVal
-                    graphView.quadCvalue = cVal
+                    a = Double(aTF.text!)
+                    if a == nil {
+                        let ac = UIAlertController(title: "Invalid A value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
                 }
+                if bTF.text!.contains("/") {
+                    b = graphView.solveFraction(fractionInput: bTF.text!)
+                } else {
+                    b = Double(bTF.text!)
+                    if b == nil {
+                        let ac = UIAlertController(title: "Invalid B value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
+                }
+                if cTF.text!.contains("/") {
+                    c = graphView.solveFraction(fractionInput: cTF.text!)
+                } else {
+                    c = Double(cTF.text!)
+                    if c == nil {
+                        let ac = UIAlertController(title: "Invalid C value", message: "Enter only numerics",preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        ac.addAction(action)
+                        self.present(ac, animated: true)
+                    }
+                }
+                graphView.quadAvalue = a
+                graphView.quadBvalue = b
+                graphView.quadCvalue = c
+                graphView.setNeedsDisplay()
+                
+            }
+            else if let aVal = Double(aTF.text!),let bVal = Double(bTF.text!),let cVal = Double(cTF.text!){
+                graphView.quadAvalue = aVal
+                graphView.quadBvalue = bVal
+                graphView.quadCvalue = cVal
                 graphView.setNeedsDisplay()
             }
             else{
@@ -435,42 +545,42 @@ class GraphViewController: UIViewController {
                 let cVal = Double(cTF.text!)
                 
                 if aVal == nil && bVal != nil && cVal != nil{
-                    let ac = UIAlertController(title: "Invalid A value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid A value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if aVal != nil && bVal == nil && cVal != nil{
-                    let ac = UIAlertController(title: "Invalid B value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid B value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if aVal != nil && bVal != nil && cVal == nil{
-                    let ac = UIAlertController(title: "Invalid C value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid C value", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if aVal == nil && bVal == nil && cVal != nil{
-                    let ac = UIAlertController(title: "Invalid A and B value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid A and B values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if aVal != nil && bVal == nil && cVal == nil{
-                    let ac = UIAlertController(title: "Invalid B and C value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid B and C values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
                     
                 }
                 else if aVal == nil && bVal != nil && cVal == nil{
-                    let ac = UIAlertController(title: "Invalid A and C value ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid A and C values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
@@ -479,7 +589,7 @@ class GraphViewController: UIViewController {
                     
                 else
                 {
-                    let ac = UIAlertController(title: "Invalid A,B,C Svalue ", message: "Enter only numerics ",preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Invalid A,B,C values", message: "Enter only numerics",preferredStyle: .alert)
                     let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                     ac.addAction(action)
                     self.present(ac, animated: true)
@@ -489,50 +599,49 @@ class GraphViewController: UIViewController {
         else{
             
             if aTF.text == "" && bTF.text != "" && cTF.text != ""{
-                let ac = UIAlertController(title: " No A value entered", message: "Enter  A value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No A value entered", message: "Enter A value",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if aTF.text != "" && bTF.text == "" && cTF.text != ""{
-                let ac = UIAlertController(title: " No B value entered", message: "Enter  B value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No B value entered", message: "Enter B value",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if aTF.text != "" && bTF.text != "" && cTF.text == ""{
-                let ac = UIAlertController(title: " No C value entered", message: "Enter  C value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No C value entered", message: "Enter C value ",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if aTF.text != "" && bTF.text == "" && cTF.text == ""{
-                let ac = UIAlertController(title: " No B  and c value entered", message: "Enter  B and c value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: " No B and C values entered", message: "Enter B and c values",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if aTF.text == "" && bTF.text != "" && cTF.text == ""{
-                let ac = UIAlertController(title: " No A and C value entered", message: "Enter A and C value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No A and C values entered", message: "Enter A and C values",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
             else if aTF.text == "" && bTF.text == "" && cTF.text != ""{
-                let ac = UIAlertController(title: " No A and B value entered", message: "Enter A and C value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No A and B values entered", message: "Enter A and C values",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
                 
             else{
-                let ac = UIAlertController(title: "No A,B,C value entered", message: "Enter  A,B,C value ",preferredStyle: .alert)
+                let ac = UIAlertController(title: "No A,B,C values entered", message: "Enter A,B,C values",preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 ac.addAction(action)
                 self.present(ac, animated: true)
             }
         }
-        
     }
     
     override func viewDidLoad() {

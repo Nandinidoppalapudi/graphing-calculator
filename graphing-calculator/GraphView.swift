@@ -150,7 +150,7 @@ class GraphView: UIView {
         
         let pointLine = UIBezierPath()
         pointLine.lineWidth = 1.0
-        UIColor.brown.setStroke()
+        UIColor.purple.setStroke()
         
         pointLine.move(to: cartToPoints(
             CGPoint(
