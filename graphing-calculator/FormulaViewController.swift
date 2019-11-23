@@ -9,7 +9,7 @@
 import UIKit
 import Darwin
 
-class FormulaViewController: UIViewController {
+class FormulaViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var enterA: UITextField!
@@ -19,12 +19,6 @@ class FormulaViewController: UIViewController {
     @IBOutlet weak var solution1: UILabel!
     
     @IBOutlet weak var solution2: UILabel!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-    
     
     @IBAction func Calculate(_ sender: Any) {
         if enterA.text != "" && enterB.text != "" && enterC.text != ""{
@@ -177,7 +171,37 @@ class FormulaViewController: UIViewController {
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        enterA.delegate = self
+        enterB.delegate = self
+        enterC.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
     
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        enterA.resignFirstResponder()
+        enterB.resignFirstResponder()
+        enterC.resignFirstResponder()
+        
+        return true
+    }
     
 }
 

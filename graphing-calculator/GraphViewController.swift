@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import Darwin
 
-class GraphViewController: UIViewController {
+class GraphViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var x1TF: UITextField!
@@ -654,6 +653,51 @@ class GraphViewController: UIViewController {
         mLBL.text = "m"
         yLBL.text = "b"
         graphView.setNeedsDisplay()
+        
+        x1TF.delegate = self
+        x2TF.delegate = self
+        y1TF.delegate = self
+        y2TF.delegate = self
+        
+        yinterceptTF.delegate = self
+        slopeTF.delegate = self
+        
+        aTF.delegate = self
+        bTF.delegate = self
+        cTF.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardRect.height
+            }
+        }
+    }
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        x1TF.resignFirstResponder()
+        x2TF.resignFirstResponder()
+        y1TF.resignFirstResponder()
+        y2TF.resignFirstResponder()
+        
+        yinterceptTF.resignFirstResponder()
+        slopeTF.resignFirstResponder()
+        
+        aTF.resignFirstResponder()
+        bTF.resignFirstResponder()
+        cTF.resignFirstResponder()
+        
+        return true
     }
     
     @objc func slideValueChanged(_ send: UISlider!) {
@@ -663,5 +707,7 @@ class GraphViewController: UIViewController {
         hashNumberLBL.text = String(getHashValue.value)
         graphView.setNeedsDisplay()
     }
+    
+    
     
 }
